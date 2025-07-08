@@ -55,109 +55,20 @@ template_storage = {
     }
 }
 
-# Available workflow tools/nodes
-WORKFLOW_TOOLS = [
-    {
-        "id": "http_request",
-        "name": "HTTP Request",
-        "icon": "globe",
-        "category": "Web",
-        "description": "Make HTTP requests to external APIs",
-        "properties": {
-            "method": {"type": "select", "options": ["GET", "POST", "PUT", "DELETE"], "default": "GET"},
-            "url": {"type": "text", "placeholder": "https://api.example.com/data"},
-            "headers": {"type": "textarea", "placeholder": "Content-Type: application/json"},
-            "body": {"type": "textarea", "placeholder": "Request body (JSON)"}
-        }
-    },
-    {
-        "id": "email_send",
-        "name": "Send Email",
-        "icon": "envelope",
-        "category": "Communication",
-        "description": "Send email notifications",
-        "properties": {
-            "to": {"type": "text", "placeholder": "recipient@example.com"},
-            "subject": {"type": "text", "placeholder": "Email subject"},
-            "body": {"type": "textarea", "placeholder": "Email body"},
-            "smtp_server": {"type": "text", "placeholder": "smtp.gmail.com"},
-            "smtp_port": {"type": "number", "default": 587}
-        }
-    },
-    {
-        "id": "data_filter",
-        "name": "Filter Data",
-        "icon": "filter",
-        "category": "Data",
-        "description": "Filter and transform data",
-        "properties": {
-            "filter_condition": {"type": "text", "placeholder": "field > 100"},
-            "fields_to_keep": {"type": "text", "placeholder": "name, email, id"},
-            "sort_by": {"type": "text", "placeholder": "created_date"},
-            "limit": {"type": "number", "default": 100}
-        }
-    },
-    {
-        "id": "webhook",
-        "name": "Webhook",
-        "icon": "link",
-        "category": "Triggers",
-        "description": "Trigger workflow via webhook",
-        "properties": {
-            "webhook_url": {"type": "text", "readonly": True, "default": "/webhook/{{node_id}}"},
-            "method": {"type": "select", "options": ["GET", "POST", "PUT"], "default": "POST"},
-            "authentication": {"type": "select", "options": ["None", "API Key", "Basic Auth"], "default": "None"}
-        }
-    },
-    {
-        "id": "delay",
-        "name": "Delay",
-        "icon": "clock",
-        "category": "Control",
-        "description": "Add delay between actions",
-        "properties": {
-            "duration": {"type": "number", "default": 5},
-            "unit": {"type": "select", "options": ["seconds", "minutes", "hours"], "default": "seconds"}
-        }
-    },
-    {
-        "id": "condition",
-        "name": "Condition",
-        "icon": "code-branch",
-        "category": "Control",
-        "description": "Branch workflow based on conditions",
-        "properties": {
-            "condition": {"type": "text", "placeholder": "data.status == 'success'"},
-            "true_path": {"type": "text", "placeholder": "Path when condition is true"},
-            "false_path": {"type": "text", "placeholder": "Path when condition is false"}
-        }
-    },
-    {
-        "id": "database_query",
-        "name": "Database Query",
-        "icon": "database",
-        "category": "Data",
-        "description": "Execute database queries",
-        "properties": {
-            "connection_string": {"type": "text", "placeholder": "postgresql://user:pass@host:port/db"},
-            "query": {"type": "textarea", "placeholder": "SELECT * FROM users WHERE active = true"},
-            "parameters": {"type": "textarea", "placeholder": "JSON parameters"}
-        }
-    },
-    {
-        "id": "file_processor",
-        "name": "File Processor",
-        "icon": "file-text",
-        "category": "Files",
-        "description": "Process and manipulate files",
-        "properties": {
-            "operation": {"type": "select", "options": ["read", "write", "append", "delete"], "default": "read"},
-            "file_path": {"type": "text", "placeholder": "/path/to/file.txt"},
-            "content": {"type": "textarea", "placeholder": "File content"},
-            "encoding": {"type": "select", "options": ["utf-8", "ascii", "latin-1"], "default": "utf-8"}
-        }
-    }
-]
+def load_workflow_tools():
+    """Loads workflow tools from a JSON file."""
+    try:
+        # Construct the file path dynamically
+        file_path = os.path.join('resources', 'workflow_tools.json')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading workflow_tools.json: {e}")
+        # Fallback to an empty list if the file is not found or corrupted
+        return []
+    
+# Load workflow tools at startup
+WORKFLOW_TOOLS = load_workflow_tools()
 
 @app.route('/')
 def index():

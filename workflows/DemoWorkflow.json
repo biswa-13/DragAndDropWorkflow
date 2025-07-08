@@ -1,0 +1,125 @@
+{
+  "name": "DemoWorkflow",
+  "nodes": [
+    {
+      "id": "node_1",
+      "type": "email_send",
+      "name": "Send Email",
+      "icon": "envelope",
+      "description": "Send email notifications",
+      "properties": {
+        "body": "",
+        "smtp_port": 587,
+        "smtp_server": "",
+        "subject": "",
+        "to": ""
+      },
+      "position": {
+        "x": -50.19999885559082,
+        "y": 3.0749969482421875
+      },
+      "status": "idle"
+    },
+    {
+      "id": "node_2",
+      "type": "delay",
+      "name": "Delay",
+      "icon": "clock",
+      "description": "Add delay between actions",
+      "properties": {
+        "duration": 5,
+        "unit": "seconds"
+      },
+      "position": {
+        "top": -79,
+        "left": 260
+      },
+      "status": "idle"
+    },
+    {
+      "id": "node_3",
+      "type": "condition",
+      "name": "Condition",
+      "icon": "code-branch",
+      "description": "Branch workflow based on conditions",
+      "properties": {
+        "condition": "",
+        "false_path": "",
+        "true_path": ""
+      },
+      "position": {
+        "top": -33,
+        "left": 256
+      },
+      "status": "idle"
+    },
+    {
+      "id": "node_4",
+      "type": "data_filter",
+      "name": "Filter Data",
+      "icon": "filter",
+      "description": "Filter and transform data",
+      "properties": {
+        "fields_to_keep": "",
+        "filter_condition": "",
+        "limit": 100,
+        "sort_by": ""
+      },
+      "position": {
+        "top": -187,
+        "left": 498
+      },
+      "status": "idle"
+    },
+    {
+      "id": "node_5",
+      "type": "database_query",
+      "name": "Database Query",
+      "icon": "database",
+      "description": "Execute database queries",
+      "properties": {
+        "connection_string": "",
+        "parameters": "",
+        "query": ""
+      },
+      "position": {
+        "top": -262,
+        "left": 743
+      },
+      "status": "idle"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn_1751999670833",
+      "source": "node_1",
+      "target": "node_2"
+    },
+    {
+      "id": "conn_1751999685082",
+      "source": "node_1",
+      "target": "node_3"
+    },
+    {
+      "id": "conn_1751999711074",
+      "source": "node_2",
+      "target": "node_4"
+    },
+    {
+      "id": "conn_1751999714031",
+      "source": "node_3",
+      "target": "node_4"
+    },
+    {
+      "id": "conn_1751999728207",
+      "source": "node_4",
+      "target": "node_5"
+    }
+  ],
+  "meta": {
+    "created": "2025-07-08T18:36:32.265Z",
+    "version": "1.0"
+  },
+  "saved_at": "2025-07-09T00:06:32.309262",
+  "file_path": "workflows\\DemoWorkflow.json"
+}

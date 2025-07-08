@@ -1,0 +1,54 @@
+{
+  "name": "Workflow 3",
+  "nodes": [
+    {
+      "id": "node_5",
+      "type": "tool_custom_function",
+      "name": "Tool: Custom Function",
+      "icon": "code",
+      "description": "Define a tool programmatically that maps to a backend service (e.g., a Cloud Function).",
+      "properties": {
+        "function_description": "",
+        "function_name": "",
+        "parameters_schema": ""
+      },
+      "position": {
+        "top": 21,
+        "left": 291
+      },
+      "status": "idle"
+    },
+    {
+      "id": "node_6",
+      "type": "agent_configuration",
+      "name": "Agent Configuration",
+      "icon": "robot",
+      "description": "Defines the agent's core behavior, persona, and connections to tools and data.",
+      "properties": {
+        "connected_data_stores": "",
+        "connected_tools": "",
+        "instructions": "",
+        "model_selection": "Gemini 1.5 Pro",
+        "temperature": "0.2"
+      },
+      "position": {
+        "top": -56,
+        "left": 18
+      },
+      "status": "idle"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn_1752013938854",
+      "source": "node_6",
+      "target": "node_5"
+    }
+  ],
+  "meta": {
+    "created": "2025-07-08T22:33:45.320Z",
+    "version": "1.0"
+  },
+  "saved_at": "2025-07-09T04:03:45.331322",
+  "file_path": "workflows\\Workflow_3.json"
+}

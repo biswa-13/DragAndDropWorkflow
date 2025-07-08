@@ -1,0 +1,23 @@
+{
+  "name": "Test Workflow",
+  "nodes": [
+    {
+      "id": "node_1",
+      "type": "http_request",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "properties": {
+        "method": "GET",
+        "url": "https://api.example.com"
+      }
+    }
+  ],
+  "connections": [],
+  "meta": {
+    "version": "1.0"
+  },
+  "saved_at": "2025-06-28T23:42:42.243943",
+  "file_path": "workflows/Test_Workflow.json"
+}

@@ -1,0 +1,441 @@
+[
+  {
+    "id": "data_store_website",
+    "name": "Website URL Data Store",
+    "icon": "globe-americas",
+    "category": "Data Stores",
+    "description": "Crawl and index public website content for Retrieval-Augmented Generation (RAG).",
+    "properties": {
+      "urls": {
+        "type": "textarea",
+        "label": "Website URLs (one per line)",
+        "placeholder": "https://your-company.com/docs\nhttps://your-company.com/faq"
+      },
+      "crawl_depth": {
+        "type": "number",
+        "label": "Crawl Depth Limit",
+        "default": 1
+      },
+      "include_patterns": {
+        "type": "textarea",
+        "label": "Inclusion Patterns (Optional)",
+        "placeholder": "**/products/**\n**/help/**"
+      },
+      "exclude_patterns": {
+        "type": "textarea",
+        "label": "Exclusion Patterns (Optional)",
+        "placeholder": "**/blog/**"
+      }
+    }
+  },
+  {
+    "id": "data_store_unstructured",
+    "name": "Unstructured Documents",
+    "icon": "file-lines",
+    "category": "Data Stores",
+    "description": "Ingest and index unstructured files (PDF, DOCX, etc.) from a Google Cloud Storage bucket.",
+    "properties": {
+      "gcs_uri": {
+        "type": "text",
+        "label": "Google Cloud Storage URI",
+        "placeholder": "gs://your-bucket-name/documents/"
+      },
+      "file_types": {
+        "type": "text",
+        "label": "File Types (comma-separated)",
+        "default": "PDF, HTML, DOCX, TXT, CSV",
+        "description": "Specify which file types to ingest from the bucket."
+      }
+    }
+  },
+  {
+    "id": "data_store_structured",
+    "name": "Structured Data (BigQuery)",
+    "icon": "database",
+    "category": "Data Stores",
+    "description": "Connect to a BigQuery table, allowing the agent to answer questions by generating and executing SQL queries.",
+    "properties": {
+      "project_id": {
+        "type": "text",
+        "label": "Google Cloud Project ID",
+        "placeholder": "gcp-project-id"
+      },
+      "dataset_id": {
+        "type": "text",
+        "label": "BigQuery Dataset ID",
+        "placeholder": "my_dataset"
+      },
+      "table_id": {
+        "type": "text",
+        "label": "BigQuery Table ID",
+        "placeholder": "sales_q2_2024"
+      }
+    }
+  },
+  {
+    "id": "data_store_third_party",
+    "name": "Third-Party App Connector",
+    "icon": "link",
+    "category": "Data Stores",
+    "description": "Connect to popular third-party apps like Salesforce or Zendesk to index their data.",
+    "properties": {
+      "connector_type": {
+        "type": "select",
+        "label": "Application",
+        "options": ["Salesforce", "Zendesk", "JIRA", "Confluence"],
+        "default": "Salesforce"
+      },
+      "authentication": {
+        "type": "textarea",
+        "label": "Authentication Details (JSON)",
+        "placeholder": "{\"type\": \"oauth2\", \"client_id\": \"...\"}"
+      }
+    }
+  },
+  {
+    "id": "agent_configuration",
+    "name": "Agent Configuration",
+    "icon": "robot",
+    "category": "Agents",
+    "description": "Defines the agent's core behavior, persona, and connections to tools and data.",
+    "properties": {
+      "model_selection": {
+        "type": "select",
+        "label": "Underlying LLM",
+        "options": ["Gemini 1.5 Pro", "Gemini 1.0 Pro", "Gemini 1.5 Flash"],
+        "default": "Gemini 1.5 Pro"
+      },
+      "contexts": {
+        "type": "textarea",
+        "label": "Background Contexts",
+        "placeholder": "You are a customer support agent for 'Global Tech'. You must use the provided tools to check order statuses. Always be polite.",
+        "description": "Provide background information that the agent should consider when responding."
+      },
+      "instructions": {
+        "type": "textarea",
+        "label": "Persona and Instructions",
+        "placeholder": "You are a friendly and professional customer support agent for 'Global Tech'. You must use the provided tools to check order statuses. Always be polite."
+      },
+      "examples": {
+        "type": "textarea",
+        "label": "Example Interactions",
+        "placeholder": "User: What is the status of my order 12345?\nAgent: Let me check that for you. Please hold on."
+      },
+      "temperature": {
+        "type": "number",
+        "label": "Temperature",
+        "description": "Controls randomness. Lower is more deterministic (e.g., 0.2). Higher is more creative (e.g., 0.9).",
+        "default": 0.2
+      },
+      "topP": {
+        "type": "number",
+        "label": "Top-P",
+        "description": "The cumulative probability of tokens to consider when sampling. Lower is more deterministic.",
+        "default": 0.95
+      },
+      "topK": {
+        "type": "number",
+        "label": "Top-K",
+        "description": "The number of top tokens to consider when sampling. Lower is more deterministic.",
+        "default": 40
+      }
+    }
+  },
+  {
+    "id": "tool_openapi",
+    "name": "Tool: OpenAPI Specification",
+    "icon": "code-branch",
+    "category": "Tools",
+    "description": "Create a tool by providing an OpenAPI v3 specification for an external REST API.",
+    "properties": {
+      "spec_source": {
+        "type": "select",
+        "label": "Specification Source",
+        "options": ["Paste", "GCS URL"],
+        "default": "Paste"
+      },
+      "openapi_spec": {
+        "type": "textarea",
+        "label": "OpenAPI v3 Specification (JSON/YAML)",
+        "placeholder": "{\"openapi\": \"3.0.0\", \"info\": {\"title\": \"CRM API\"...}"
+      }
+    }
+  },
+  {
+    "id": "tool_custom_function",
+    "name": "Tool: Custom Function",
+    "icon": "code",
+    "category": "Tools",
+    "description": "Define a tool programmatically that maps to a backend service (e.g., a Cloud Function).",
+    "properties": {
+      "function_name": {
+        "type": "text",
+        "label": "Function Name",
+        "placeholder": "get_order_status"
+      },
+      "function_description": {
+        "type": "textarea",
+        "label": "Function Description (for LLM)",
+        "placeholder": "Gets the current shipping status of an order given its order ID."
+      },
+      "parameters_schema": {
+        "type": "textarea",
+        "label": "Parameters (JSON Schema)",
+        "placeholder": "{\"type\": \"object\", \"properties\": {\"order_id\": {\"type\": \"string\", \"description\": \"The ID of the order\"}}, \"required\": [\"order_id\"]}"
+      }
+    }
+  },
+  {
+    "id": "tool_google_search",
+    "name": "Tool: Google Search",
+    "icon": "magnifying-glass",
+    "category": "Tools",
+    "description": "A built-in tool that allows the agent to search the public internet.",
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "label": "Enable Google Search Tool",
+        "default": "false"
+      }
+    }
+  },
+  {
+    "id": "langchain_integration",
+    "name": "LangChain Integration",
+    "icon": "link",
+    "category": "Orchestration Frameworks",
+    "description": "Use the LangChain open-source framework on Vertex AI for building complex agent logic, chains, and memory.",
+    "properties": {
+      "vertexai_llm": {
+        "type": "select",
+        "label": "Vertex AI LLM",
+        "options": ["Gemini 1.5 Pro", "Gemini 1.0 Pro", "Other..."],
+        "description": "The language model to use for chains and agents."
+      },
+      "vertexai_embeddings": {
+        "type": "select",
+        "label": "Vertex AI Embeddings Model",
+        "options": ["text-embedding-004", "text-multilingual-embedding-002"],
+        "description": "The model used to create embeddings for RAG."
+      },
+      "vector_store_connector": {
+        "type": "select",
+        "label": "Vector Store Connector",
+        "options": ["Vertex AI Vector Search", "In-Memory", "Other..."],
+        "description": "The vector database to connect to for long-term memory."
+      },
+      "chat_message_history": {
+        "type": "text",
+        "label": "Chat History Storage",
+        "placeholder": "e.g., GCS URI or Database connection string",
+        "description": "Location to persist conversational memory."
+      }
+    }
+  },
+  {
+    "id": "model_gemini",
+    "name": "Gemini Family Model",
+    "icon": "brain",
+    "category": "Foundational Models",
+    "description": "Select a Gemini model for core reasoning, text generation, and multimodal understanding.",
+    "properties": {
+      "model_name": {
+        "type": "select",
+        "label": "Model Name",
+        "options": [
+          "gemini-1.5-pro-latest",
+          "gemini-1.5-flash-latest",
+          "gemini-1.0-pro-vision-latest",
+          "gemini-1.0-pro-latest"
+        ],
+        "default": "gemini-1.5-pro-latest"
+      },
+      "temperature": {
+        "type": "number",
+        "label": "Temperature",
+        "description": "Controls randomness. Lower is more deterministic.",
+        "default": 0.2
+      },
+      "max_output_tokens": {
+        "type": "number",
+        "label": "Max Output Tokens",
+        "description": "Maximum number of tokens to generate.",
+        "default": 8192
+      },
+      "stop_sequences": {
+        "type": "textarea",
+        "label": "Stop Sequences",
+        "placeholder": "[\"\\n\", \".\"]",
+        "description": "Sequences where the model will stop generating."
+      }
+    }
+  },
+  {
+    "id": "model_imagen",
+    "name": "Imagen Image Model",
+    "icon": "image",
+    "category": "Foundational Models",
+    "description": "Generate or edit high-quality images using Google's state-of-the-art Imagen models.",
+    "properties": {
+      "prompt": {
+        "type": "textarea",
+        "label": "Prompt",
+        "placeholder": "A photorealistic image of an astronaut riding a horse"
+      },
+      "negative_prompt": {
+        "type": "textarea",
+        "label": "Negative Prompt",
+        "placeholder": "cartoon, drawing, blurry",
+        "description": "Describe what you DON'T want in the image."
+      },
+      "number_of_images": {
+        "type": "number",
+        "label": "Number of Images to Generate",
+        "default": 1
+      },
+      "aspect_ratio": {
+        "type": "select",
+        "label": "Aspect Ratio",
+        "options": ["1:1", "16:9", "9:16", "4:3", "3:4"],
+        "default": "1:1"
+      }
+    }
+  },
+  {
+    "id": "model_third_party",
+    "name": "Third-Party & Open Model",
+    "icon": "cubes",
+    "category": "Foundational Models",
+    "description": "Use popular open-source or third-party models like Llama or Mistral, hosted and optimized on Vertex AI.",
+    "properties": {
+      "model_id": {
+        "type": "select",
+        "label": "Select Hosted Model",
+        "options": [
+          "Llama3-8b-instruct",
+          "Mistral-7B-Instruct",
+          "Gemma-7B",
+          "Claude-3-Sonnet"
+        ],
+        "default": "Llama3-8b-instruct"
+      },
+      "endpoint_url": {
+        "type": "text",
+        "label": "Vertex AI Endpoint URL",
+        "readonly": true,
+        "placeholder": "projects/PROJECT_ID/locations/LOCATION/endpoints/ENDPOINT_ID"
+      }
+    }
+  },
+  {
+    "id": "api_gemini_call",
+    "name": "Gemini API Call",
+    "icon": "paper-plane",
+    "category": "API Services",
+    "description": "Make a direct call to the Gemini API for advanced tasks like tool calling or complex prompting.",
+    "properties": {
+      "prompt": {
+        "type": "textarea",
+        "label": "User Prompt / Content",
+        "placeholder": "What is the status of order 12345?"
+      },
+      "system_instruction": {
+        "type": "textarea",
+        "label": "System Instruction (Persona)",
+        "placeholder": "You are a helpful assistant."
+      },
+      "tool_config": {
+        "type": "textarea",
+        "label": "Tool Configuration (JSON)",
+        "placeholder": "{\"function_declarations\": [{\"name\": \"get_order_status\", ...}]}",
+        "description": "Define the functions (tools) the model can call."
+      }
+    }
+  },
+  {
+    "id": "service_vertex_ai_search",
+    "name": "Vertex AI Search Query",
+    "icon": "magnifying-glass-chart",
+    "category": "API Services",
+    "description": "Perform a managed RAG query against a pre-configured Search App and Data Store.",
+    "properties": {
+      "search_app_id": {
+        "type": "text",
+        "label": "Search Application ID",
+        "placeholder": "projects/PROJECT_ID/locations/global/collections/default_collection/dataStores/DATA_STORE_ID"
+      },
+      "query": {
+        "type": "text",
+        "label": "Natural Language Query",
+        "placeholder": "Tell me about our return policy"
+      },
+      "summary_result_count": {
+        "type": "number",
+        "label": "Results to Summarize",
+        "default": 5
+      }
+    }
+  },
+  {
+    "id": "service_embeddings_api",
+    "name": "Embeddings API Call",
+    "icon": "wave-square",
+    "category": "API Services",
+    "description": "Convert text into numerical vector embeddings for semantic search or classification.",
+    "properties": {
+      "model_name": {
+        "type": "select",
+        "label": "Embeddings Model",
+        "options": ["text-embedding-004", "text-multilingual-embedding-002"],
+        "default": "text-embedding-004"
+      },
+      "text_input": {
+        "type": "textarea",
+        "label": "Text to Embed",
+        "placeholder": "This is the document content to be vectorized."
+      },
+      "task_type": {
+        "type": "select",
+        "label": "Task Type",
+        "options": [
+          "RETRIEVAL_QUERY",
+          "RETRIEVAL_DOCUMENT",
+          "SEMANTIC_SIMILARITY",
+          "CLASSIFICATION",
+          "CLUSTERING"
+        ],
+        "default": "RETRIEVAL_DOCUMENT"
+      }
+    }
+  },
+  {
+    "id": "service_vector_search",
+    "name": "Vector Search Query",
+    "icon": "sitemap",
+    "category": "API Services",
+    "description": "Find the most similar vectors in a high-performance index (the agent's 'memory').",
+    "properties": {
+      "index_endpoint_id": {
+        "type": "text",
+        "label": "Index Endpoint ID",
+        "placeholder": "projects/PROJECT_ID/locations/LOCATION/indexEndpoints/ENDPOINT_ID"
+      },
+      "deployed_index_id": {
+        "type": "text",
+        "label": "Deployed Index ID",
+        "placeholder": "my_deployed_index_id"
+      },
+      "query_vector": {
+        "type": "textarea",
+        "label": "Query Vector (Float Array)",
+        "placeholder": "[0.1, 0.2, 0.3, ...]"
+      },
+      "num_neighbors": {
+        "type": "number",
+        "label": "Number of Neighbors",
+        "description": "The number of nearest neighbors to find.",
+        "default": 10
+      }
+    }
+  }
+]

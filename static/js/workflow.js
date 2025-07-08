@@ -662,7 +662,7 @@ class WorkflowManager {
     
     clearCanvas() {
         this.nodes.clear();
-        this.connections.clear();
+        this.connections = [];
         $('#nodes-container').empty();
         this.updateConnections();
         this.showCanvasGuide();
